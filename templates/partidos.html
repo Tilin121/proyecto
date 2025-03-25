@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Partidos - PredictBet{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h3><i class="fas fa-futbol me-2"></i>Partidos Próximos</h3>
+    </div>
+    <div class="card-body">
+        {% if partidos %}
+            <ul class="list-group">
+                {% for partido in partidos %}
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span>{{ partido.local }} vs {{ partido.visitante }}</span>
+                        <a href="/prediccion/{{ partido.id }}" class="btn btn-sm btn-primary">Predecir</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info">No se encontraron partidos.</div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

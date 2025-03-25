@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block title %}Error - PredictBet{% endblock %}
+
+{% block content %}
+<div class="card text-center">
+    <div class="card-body">
+        <h2 class="text-danger"><i class="fas fa-exclamation-triangle"></i> Error</h2>
+        <p>{{ mensaje }}</p>
+        <a href="/" class="btn btn-primary">Volver al inicio</a>
+    </div>
+</div>
+{% endblock %}
