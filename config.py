@@ -4,9 +4,9 @@ def conectar_db():
     """Establece conexión con PostgreSQL y la devuelve."""
     try:
         conn = psycopg2.connect(
-            dbname="proyect",
-            user="postgres",
-            password="Futbol123",
+            dbname="apuestas",
+            user="proyect",
+            password="Futbol123",  # Mantuve la misma contraseña, cámbiala si es necesario
             host="localhost",
             port="5432"
         )
