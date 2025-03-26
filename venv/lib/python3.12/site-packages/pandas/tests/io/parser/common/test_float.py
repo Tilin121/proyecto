@@ -32,7 +32,8 @@ def test_float_parser(all_parsers):
 
 def test_scientific_no_exponent(all_parsers_all_precisions):
     # see gh-12215
-    df = DataFrame.from_dict({"w": ["2e"], "x": ["3E"], "y": ["42e"], "z": ["632E"]})
+    df = DataFrame.from_dict(
+        {"w": ["2e"], "x": ["3E"], "y": ["42e"], "z": ["632E"]})
     data = df.to_csv(index=False)
     parser, precision = all_parsers_all_precisions
 
@@ -59,7 +60,8 @@ def test_very_negative_exponent(all_parsers_all_precisions, neg_exp):
 
 
 @pytest.mark.skip_ubsan
-@xfail_pyarrow  # AssertionError: Attributes of DataFrame.iloc[:, 0] are different
+# AssertionError: Attributes of DataFrame.iloc[:, 0] are different
+@xfail_pyarrow
 @pytest.mark.parametrize("exp", [999999999999999999, -999999999999999999])
 def test_too_many_exponent_digits(all_parsers_all_precisions, exp, request):
     # GH#38753
@@ -68,7 +70,8 @@ def test_too_many_exponent_digits(all_parsers_all_precisions, exp, request):
     result = parser.read_csv(StringIO(data), float_precision=precision)
     if precision == "round_trip":
         if exp == 999999999999999999 and is_platform_linux():
-            mark = pytest.mark.xfail(reason="GH38794, on Linux gives object result")
+            mark = pytest.mark.xfail(
+                reason="GH38794, on Linux gives object result")
             request.applymarker(mark)
 
         value = np.inf if exp > 0 else 0.0

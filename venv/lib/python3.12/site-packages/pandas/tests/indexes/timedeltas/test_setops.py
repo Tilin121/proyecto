@@ -38,7 +38,8 @@ class TestTimedeltaIndex:
         tm.assert_index_equal(result, tdi)
 
         result = left.union(right, sort=False)
-        expected = TimedeltaIndex(["4 Days", "5 Days", "1 Days", "2 Day", "3 Days"])
+        expected = TimedeltaIndex(
+            ["4 Days", "5 Days", "1 Days", "2 Day", "3 Days"])
         tm.assert_index_equal(result, expected)
 
     def test_union_coverage(self):
@@ -174,12 +175,14 @@ class TestTimedeltaIndex:
         # part intersection works
         [
             (
-                TimedeltaIndex(["5 hour", "2 hour", "4 hour", "9 hour"], name="idx"),
+                TimedeltaIndex(
+                    ["5 hour", "2 hour", "4 hour", "9 hour"], name="idx"),
                 TimedeltaIndex(["2 hour", "4 hour"], name="idx"),
             ),
             # reordered part intersection
             (
-                TimedeltaIndex(["2 hour", "5 hour", "5 hour", "1 hour"], name="other"),
+                TimedeltaIndex(
+                    ["2 hour", "5 hour", "5 hour", "1 hour"], name="other"),
                 TimedeltaIndex(["1 hour", "2 hour"], name=None),
             ),
             # reversed index
@@ -187,13 +190,15 @@ class TestTimedeltaIndex:
                 TimedeltaIndex(["1 hour", "2 hour", "4 hour", "3 hour"], name="idx")[
                     ::-1
                 ],
-                TimedeltaIndex(["1 hour", "2 hour", "4 hour", "3 hour"], name="idx"),
+                TimedeltaIndex(
+                    ["1 hour", "2 hour", "4 hour", "3 hour"], name="idx"),
             ),
         ],
     )
     def test_intersection_non_monotonic(self, rng, expected, sort):
         # 24471 non-monotonic
-        base = TimedeltaIndex(["1 hour", "2 hour", "4 hour", "3 hour"], name="idx")
+        base = TimedeltaIndex(
+            ["1 hour", "2 hour", "4 hour", "3 hour"], name="idx")
         result = base.intersection(rng, sort=sort)
         if sort is None:
             expected = expected.sort_values()

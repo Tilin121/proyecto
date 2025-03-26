@@ -53,7 +53,7 @@ def pyarrow_array_to_numpy_and_mask(
     # See also https://github.com/pandas-dev/pandas/issues/40896
     offset = arr.offset * dtype.itemsize
     length = len(arr) * dtype.itemsize
-    data_buf = buflist[1][offset : offset + length]
+    data_buf = buflist[1][offset: offset + length]
     data = np.frombuffer(data_buf, dtype=dtype)
     bitmask = buflist[0]
     if bitmask is not None:

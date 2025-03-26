@@ -8,9 +8,11 @@ HEADERS = {
 
 URL_BASE = "https://footystats.org"
 
+
 def limpiar_nombre_equipo(nombre):
     """Limpia el nombre del equipo eliminando datos extra."""
-    return nombre.split('UEFA')[0].split('Premier League')[0].split('Forma')[0].strip()
+    return nombre.split("UEFA")[0].split("Premier League")[0].split("Forma")[0].strip()
+
 
 def obtener_ligas():
     """Extrae las ligas de FootyStats y las almacena en la base de datos."""
@@ -18,7 +20,10 @@ def obtener_ligas():
     response = requests.get(f"{URL_BASE}/es/", headers=HEADERS)
 
     if response.status_code != 200:
-        print(f"❌ Error al obtener datos de FootyStats. Código {response.status_code}")
+        print(
+            f"❌ Error al obtener datos de FootyStats. Código {
+                response.status_code}"
+        )
         return {}
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -43,12 +48,15 @@ def obtener_ligas():
 
     cursor = conn.cursor()
     for nombre, url in ligas.items():
-        cursor.execute("""
-            INSERT INTO ligas (nombre, url) 
-            VALUES (%s, %s) 
+        cursor.execute(
+            """
+            INSERT INTO ligas (nombre, url)
+            VALUES (%s, %s)
             ON CONFLICT (nombre) DO NOTHING;
-        """, (nombre, url))
-    
+        """,
+            (nombre, url),
+        )
+
     conn.commit()
     cursor.close()
     conn.close()
@@ -56,13 +64,17 @@ def obtener_ligas():
     print("✅ Ligas almacenadas en la base de datos.")
     return ligas
 
+
 def obtener_equipos_y_cuotas(url_liga, nombre_liga):
     """Extrae los equipos y cuotas de una liga en FootyStats."""
     print(f"\n📌 Obteniendo equipos y cuotas de {nombre_liga}...")
 
     response = requests.get(url_liga, headers=HEADERS)
     if response.status_code != 200:
-        print(f"❌ Error al obtener equipos de {nombre_liga}. Código {response.status_code}")
+        print(
+            f"❌ Error al obtener equipos de {nombre_liga}. Código {
+                response.status_code}"
+        )
         return []
 
     soup = BeautifulSoup(response.text, "html.parser")
@@ -75,7 +87,9 @@ def obtener_equipos_y_cuotas(url_liga, nombre_liga):
         if "/es/clubs/" in href:
             nombre_equipo = limpiar_nombre_equipo(link.text.strip())
             if nombre_equipo and not nombre_equipo.isdigit():
-                equipos[nombre_equipo] = URL_BASE + href if not href.startswith("https") else href
+                equipos[nombre_equipo] = (
+                    URL_BASE + href if not href.startswith("https") else href
+                )
 
     # 📌 Extraer cuotas de partidos
     for partido in soup.select("div.match-odds-container"):
@@ -88,15 +102,34 @@ def obtener_equipos_y_cuotas(url_liga, nombre_liga):
             cuota_local = cuotas_partido[0].text.strip()
             cuota_empate = cuotas_partido[1].text.strip()
             cuota_visitante = cuotas_partido[2].text.strip()
-            casa_apuestas = "FootyStats"  # Se puede mejorar si hay varias casas de apuestas
+            casa_apuestas = (
+                "FootyStats"  # Se puede mejorar si hay varias casas de apuestas
+            )
 
             # 📌 Validar que las cuotas sean numéricas
-            if cuota_local.replace(".", "").isdigit() and cuota_empate.replace(".", "").isdigit() and cuota_visitante.replace(".", "").isdigit():
-                cuotas.append((equipo_local, "Victoria Local", float(cuota_local), casa_apuestas))
-                cuotas.append((equipo_visitante, "Victoria Visitante", float(cuota_visitante), casa_apuestas))
+            if (
+                cuota_local.replace(".", "").isdigit()
+                and cuota_empate.replace(".", "").isdigit()
+                and cuota_visitante.replace(".", "").isdigit()
+            ):
+                cuotas.append(
+                    (equipo_local, "Victoria Local", float(cuota_local), casa_apuestas)
+                )
+                cuotas.append(
+                    (
+                        equipo_visitante,
+                        "Victoria Visitante",
+                        float(cuota_visitante),
+                        casa_apuestas,
+                    )
+                )
                 cuotas.append(("Empate", "Empate", float(cuota_empate), casa_apuestas))
 
-    print(f"✅ {len(equipos)} equipos y {len(cuotas)} cuotas extraídas de {nombre_liga}.")
+    print(
+        f"✅ {
+            len(equipos)} equipos y {
+            len(cuotas)} cuotas extraídas de {nombre_liga}."
+    )
 
     # Guardar en la base de datos
     conn = conectar_db()
@@ -104,15 +137,18 @@ def obtener_equipos_y_cuotas(url_liga, nombre_liga):
         return equipos
 
     cursor = conn.cursor()
-    
+
     # 📌 Insertar equipos
     for nombre, url in equipos.items():
         try:
-            cursor.execute("""
+            cursor.execute(
+                """
                 INSERT INTO equipos (nombre, liga_id, url)
                 VALUES (%s, (SELECT id FROM ligas WHERE nombre = %s), %s)
                 ON CONFLICT (nombre) DO NOTHING;
-            """, (nombre, nombre_liga, url))
+            """,
+                (nombre, nombre_liga, url),
+            )
         except Exception as e:
             print(f"❌ Error al insertar equipo {nombre}: {e}")
 
@@ -124,14 +160,19 @@ def obtener_equipos_y_cuotas(url_liga, nombre_liga):
 
             if equipo_id:
                 equipo_id = equipo_id[0]
-                cursor.execute("""
+                cursor.execute(
+                    """
                     INSERT INTO cuotas (equipo_id, tipo_apuesta, valor, casa_apuestas, fecha)
                     VALUES (%s, %s, %s, %s, NOW())
-                    ON CONFLICT (equipo_id, tipo_apuesta, casa_apuestas) DO UPDATE 
+                    ON CONFLICT (equipo_id, tipo_apuesta, casa_apuestas) DO UPDATE
                     SET valor = EXCLUDED.valor, fecha = NOW();
-                """, (equipo_id, tipo, valor, casa))
+                """,
+                    (equipo_id, tipo, valor, casa),
+                )
             else:
-                print(f"⚠️ Equipo '{equipo}' no encontrado en la BD. No se insertó la cuota.")
+                print(
+                    f"⚠️ Equipo '{equipo}' no encontrado en la BD. No se insertó la cuota."
+                )
 
         except Exception as e:
             print(f"❌ Error al insertar cuota de {equipo}: {e}")

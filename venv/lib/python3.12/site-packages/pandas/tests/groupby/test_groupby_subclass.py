@@ -59,7 +59,8 @@ def test_groupby_preserves_subclass(obj, groupby_func):
 
 def test_groupby_preserves_metadata():
     # GH-37343
-    custom_df = tm.SubclassedDataFrame({"a": [1, 2, 3], "b": [1, 1, 2], "c": [7, 8, 9]})
+    custom_df = tm.SubclassedDataFrame(
+        {"a": [1, 2, 3], "b": [1, 1, 2], "c": [7, 8, 9]})
     assert "testattr" in custom_df._metadata
     custom_df.testattr = "hello"
     for _, group_df in custom_df.groupby("c"):
@@ -80,7 +81,8 @@ def test_groupby_preserves_metadata():
         check_stacklevel=False,
     ):
         result = custom_df.groupby("c").apply(func)
-    expected = tm.SubclassedSeries(["hello"] * 3, index=Index([7, 8, 9], name="c"))
+    expected = tm.SubclassedSeries(
+        ["hello"] * 3, index=Index([7, 8, 9], name="c"))
     tm.assert_series_equal(result, expected)
 
     result = custom_df.groupby("c").apply(func, include_groups=False)

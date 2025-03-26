@@ -82,19 +82,19 @@ class TestIntervalIndex:
         # slice of interval
 
         expected = ser.iloc[:3]
-        result = indexer_sl(ser)[Interval(0, 1) : Interval(2, 3)]
+        result = indexer_sl(ser)[Interval(0, 1): Interval(2, 3)]
         tm.assert_series_equal(expected, result)
 
         expected = ser.iloc[3:]
-        result = indexer_sl(ser)[Interval(3, 4) :]
+        result = indexer_sl(ser)[Interval(3, 4):]
         tm.assert_series_equal(expected, result)
 
         msg = "Interval objects are not currently supported"
         with pytest.raises(NotImplementedError, match=msg):
-            indexer_sl(ser)[Interval(3, 6) :]
+            indexer_sl(ser)[Interval(3, 6):]
 
         with pytest.raises(NotImplementedError, match=msg):
-            indexer_sl(ser)[Interval(3, 4, closed="left") :]
+            indexer_sl(ser)[Interval(3, 4, closed="left"):]
 
     def test_slice_step_ne1(self, series_with_interval_index):
         # GH#31658 slice of scalar with step != 1
@@ -121,7 +121,7 @@ class TestIntervalIndex:
         ser = series_with_interval_index.copy()
         msg = "label-based slicing with step!=1 is not supported for IntervalIndex"
         with pytest.raises(ValueError, match=msg):
-            ser[0 : 4 : Interval(0, 1)]
+            ser[0: 4: Interval(0, 1)]
 
     def test_loc_with_overlap(self, indexer_sl):
         idx = IntervalIndex.from_tuples([(1, 5), (3, 7)])
@@ -156,7 +156,7 @@ class TestIntervalIndex:
 
         # slices with interval (only exact matches)
         expected = ser
-        result = indexer_sl(ser)[Interval(1, 5) : Interval(3, 7)]
+        result = indexer_sl(ser)[Interval(1, 5): Interval(3, 7)]
         tm.assert_series_equal(expected, result)
 
         msg = (
@@ -164,7 +164,7 @@ class TestIntervalIndex:
             "non-overlapping and all monotonic increasing or decreasing'"
         )
         with pytest.raises(KeyError, match=msg):
-            indexer_sl(ser)[Interval(1, 6) : Interval(3, 8)]
+            indexer_sl(ser)[Interval(1, 6): Interval(3, 8)]
 
         if indexer_sl is tm.loc:
             # slices with scalar raise for overlapping intervals
@@ -192,7 +192,7 @@ class TestIntervalIndex:
         tm.assert_series_equal(expected, result)
 
         expected = ser
-        result = indexer_sl(ser)[Interval(1, 3) :]
+        result = indexer_sl(ser)[Interval(1, 3):]
         tm.assert_series_equal(expected, result)
 
         expected = ser.iloc[[0, 1]]

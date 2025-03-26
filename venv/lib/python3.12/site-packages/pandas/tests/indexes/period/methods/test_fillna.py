@@ -10,7 +10,8 @@ import pandas._testing as tm
 class TestFillNA:
     def test_fillna_period(self):
         # GH#11343
-        idx = PeriodIndex(["2011-01-01 09:00", NaT, "2011-01-01 11:00"], freq="h")
+        idx = PeriodIndex(
+            ["2011-01-01 09:00", NaT, "2011-01-01 11:00"], freq="h")
 
         exp = PeriodIndex(
             ["2011-01-01 09:00", "2011-01-01 10:00", "2011-01-01 11:00"], freq="h"

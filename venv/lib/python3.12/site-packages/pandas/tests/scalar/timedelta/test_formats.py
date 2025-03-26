@@ -51,7 +51,7 @@ class TestReprBase:
         delta_1s = Timedelta(1, unit="s")
         delta_500ms = Timedelta(500, unit="ms")
 
-        drepr = lambda x: x._repr_base()
+        def drepr(x): return x._repr_base()
         assert drepr(delta_1d) == "1 days"
         assert drepr(-delta_1d) == "-1 days"
         assert drepr(delta_0d) == "0 days"
@@ -68,7 +68,7 @@ class TestReprBase:
         delta_1s = Timedelta(1, unit="s")
         delta_500ms = Timedelta(500, unit="ms")
 
-        drepr = lambda x: x._repr_base(format="sub_day")
+        def drepr(x): return x._repr_base(format="sub_day")
         assert drepr(delta_1d) == "1 days"
         assert drepr(-delta_1d) == "-1 days"
         assert drepr(delta_0d) == "00:00:00"
@@ -85,7 +85,7 @@ class TestReprBase:
         delta_1s = Timedelta(1, unit="s")
         delta_500ms = Timedelta(500, unit="ms")
 
-        drepr = lambda x: x._repr_base(format="long")
+        def drepr(x): return x._repr_base(format="long")
         assert drepr(delta_1d) == "1 days 00:00:00"
         assert drepr(-delta_1d) == "-1 days +00:00:00"
         assert drepr(delta_0d) == "0 days 00:00:00"
@@ -101,7 +101,7 @@ class TestReprBase:
         delta_0d = Timedelta(0, unit="D")
         delta_1ns = Timedelta(1, unit="ns")
 
-        drepr = lambda x: x._repr_base(format="all")
+        def drepr(x): return x._repr_base(format="all")
         assert drepr(delta_1d) == "1 days 00:00:00.000000000"
         assert drepr(-delta_1d) == "-1 days +00:00:00.000000000"
         assert drepr(delta_0d) == "0 days 00:00:00.000000000"

@@ -1,3 +1,4 @@
+from pandas.compat import pa_version_under11p0
 import re
 
 import pytest
@@ -9,8 +10,6 @@ from pandas import (
 import pandas._testing as tm
 
 pa = pytest.importorskip("pyarrow")
-
-from pandas.compat import pa_version_under11p0
 
 
 @pytest.mark.parametrize(

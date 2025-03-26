@@ -34,7 +34,8 @@ class TestSeriesCov:
         assert isna(cp.cov(cp))
 
         # min_periods
-        assert isna(datetime_series[:15].cov(datetime_series[5:], min_periods=12))
+        assert isna(datetime_series[:15].cov(
+            datetime_series[5:], min_periods=12))
 
         ts1 = datetime_series[:15].reindex(datetime_series.index)
         ts2 = datetime_series[5:].reindex(datetime_series.index)
@@ -66,9 +67,11 @@ class TestSeriesCorr:
         tm.assert_almost_equal(datetime_series.corr(datetime_series), 1)
 
         # partial overlap
-        tm.assert_almost_equal(datetime_series[:15].corr(datetime_series[5:]), 1)
+        tm.assert_almost_equal(
+            datetime_series[:15].corr(datetime_series[5:]), 1)
 
-        assert isna(datetime_series[:15].corr(datetime_series[5:], min_periods=12))
+        assert isna(datetime_series[:15].corr(
+            datetime_series[5:], min_periods=12))
 
         ts1 = datetime_series[:15].reindex(datetime_series.index)
         ts2 = datetime_series[5:].reindex(datetime_series.index)
@@ -156,7 +159,7 @@ class TestSeriesCorr:
     def test_corr_callable_method(self, datetime_series):
         # simple correlation example
         # returns 1 if exact equality, 0 otherwise
-        my_corr = lambda a, b: 1.0 if (a == b).all() else 0.0
+        def my_corr(a, b): return 1.0 if (a == b).all() else 0.0
 
         # simple example
         s1 = Series([1, 2, 3, 4, 5])

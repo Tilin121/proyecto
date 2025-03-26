@@ -4,4 +4,5 @@ from pandas.core.groupby.base import transformation_kernels
 series_transform_kernels = [
     x for x in sorted(transformation_kernels) if x != "cumcount"
 ]
-frame_transform_kernels = [x for x in sorted(transformation_kernels) if x != "cumcount"]
+frame_transform_kernels = [x for x in sorted(
+    transformation_kernels) if x != "cumcount"]

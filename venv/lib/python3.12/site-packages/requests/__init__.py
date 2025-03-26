@@ -38,6 +38,38 @@ is at <https://requests.readthedocs.io>.
 :license: Apache 2.0, see LICENSE for more details.
 """
 
+from .status_codes import codes
+from .sessions import Session, session
+from .models import PreparedRequest, Request, Response
+from .exceptions import (
+    ConnectionError,
+    ConnectTimeout,
+    FileModeWarning,
+    HTTPError,
+    JSONDecodeError,
+    ReadTimeout,
+    RequestException,
+    Timeout,
+    TooManyRedirects,
+    URLRequired,
+)
+from .api import delete, get, head, options, patch, post, put, request
+from .__version__ import (
+    __author__,
+    __author_email__,
+    __build__,
+    __cake__,
+    __copyright__,
+    __description__,
+    __license__,
+    __title__,
+    __url__,
+    __version__,
+)
+from . import packages, utils
+from logging import NullHandler
+import logging
+from urllib3.exceptions import DependencyWarning
 import warnings
 
 import urllib3
@@ -55,9 +87,13 @@ except ImportError:
     chardet_version = None
 
 
-def check_compatibility(urllib3_version, chardet_version, charset_normalizer_version):
+def check_compatibility(
+        urllib3_version,
+        chardet_version,
+        charset_normalizer_version):
     urllib3_version = urllib3_version.split(".")
-    assert urllib3_version != ["dev"]  # Verify urllib3 isn't installed from git.
+    # Verify urllib3 isn't installed from git.
+    assert urllib3_version != ["dev"]
 
     # Sometimes, urllib3 only reports its version as 16.1.
     if len(urllib3_version) == 2:
@@ -99,8 +135,7 @@ def _check_cryptography(cryptography_version):
 
     if cryptography_version < [1, 3, 4]:
         warning = "Old version of cryptography ({}) may cause slowdown.".format(
-            cryptography_version
-        )
+            cryptography_version)
         warnings.warn(warning, RequestsDependencyWarning)
 
 
@@ -113,8 +148,9 @@ except (AssertionError, ValueError):
     warnings.warn(
         "urllib3 ({}) or chardet ({})/charset_normalizer ({}) doesn't match a supported "
         "version!".format(
-            urllib3.__version__, chardet_version, charset_normalizer_version
-        ),
+            urllib3.__version__,
+            chardet_version,
+            charset_normalizer_version),
         RequestsDependencyWarning,
     )
 
@@ -140,43 +176,11 @@ except ImportError:
     pass
 
 # urllib3's DependencyWarnings should be silenced.
-from urllib3.exceptions import DependencyWarning
 
 warnings.simplefilter("ignore", DependencyWarning)
 
 # Set default logging handler to avoid "No handler found" warnings.
-import logging
-from logging import NullHandler
 
-from . import packages, utils
-from .__version__ import (
-    __author__,
-    __author_email__,
-    __build__,
-    __cake__,
-    __copyright__,
-    __description__,
-    __license__,
-    __title__,
-    __url__,
-    __version__,
-)
-from .api import delete, get, head, options, patch, post, put, request
-from .exceptions import (
-    ConnectionError,
-    ConnectTimeout,
-    FileModeWarning,
-    HTTPError,
-    JSONDecodeError,
-    ReadTimeout,
-    RequestException,
-    Timeout,
-    TooManyRedirects,
-    URLRequired,
-)
-from .models import PreparedRequest, Request, Response
-from .sessions import Session, session
-from .status_codes import codes
 
 logging.getLogger(__name__).addHandler(NullHandler())
 

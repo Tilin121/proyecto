@@ -1,5 +1,6 @@
 from config import conectar_db
 
+
 def crear_tablas():
     """Crea las tablas necesarias en PostgreSQL si no existen."""
     conn = conectar_db()
@@ -7,9 +8,10 @@ def crear_tablas():
         return
 
     cursor = conn.cursor()
-    
+
     # Tabla de ligas
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS ligas CASCADE;
         CREATE TABLE ligas (
             id SERIAL PRIMARY KEY,
@@ -17,10 +19,12 @@ def crear_tablas():
             pais TEXT NOT NULL,
             url TEXT NOT NULL
         );
-    """)
+    """
+    )
 
     # Tabla de equipos
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS equipos CASCADE;
         CREATE TABLE equipos (
             id SERIAL PRIMARY KEY,
@@ -28,10 +32,12 @@ def crear_tablas():
             liga_id INTEGER REFERENCES ligas(id) ON DELETE CASCADE,
             url TEXT
         );
-    """)
+    """
+    )
 
     # Tabla de jugadores
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS jugadores CASCADE;
         CREATE TABLE jugadores (
             id SERIAL PRIMARY KEY,
@@ -41,10 +47,12 @@ def crear_tablas():
             nacionalidad TEXT,
             edad INTEGER
         );
-    """)
+    """
+    )
 
     # Tabla de estadísticas de jugadores
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS estadisticas_jugadores CASCADE;
         CREATE TABLE estadisticas_jugadores (
             id SERIAL PRIMARY KEY,
@@ -59,10 +67,12 @@ def crear_tablas():
             equipo_id INTEGER REFERENCES equipos(id) ON DELETE CASCADE,
             UNIQUE (jugador_id)
         );
-    """)
+    """
+    )
 
     # Tabla de partidos
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS partidos CASCADE;
         CREATE TABLE partidos (
             id SERIAL PRIMARY KEY,
@@ -75,10 +85,12 @@ def crear_tablas():
             terminado BOOLEAN DEFAULT FALSE,
             UNIQUE (equipo_local_id, equipo_visitante_id, fecha)
         );
-    """)
+    """
+    )
 
     # Tabla de cuotas
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS cuotas CASCADE;
         CREATE TABLE cuotas (
             id SERIAL PRIMARY KEY,
@@ -90,10 +102,12 @@ def crear_tablas():
             fecha TIMESTAMP NOT NULL DEFAULT NOW(),
             UNIQUE (partido_id, tipo_apuesta, casa_apuestas)
         );
-    """)
+    """
+    )
 
     # Tabla de estadísticas históricas de equipos
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS estadisticas_historicas CASCADE;
         CREATE TABLE estadisticas_historicas (
             id SERIAL PRIMARY KEY,
@@ -107,10 +121,12 @@ def crear_tablas():
             xga NUMERIC(5,2), -- Expected goals against
             UNIQUE (equipo_id, fecha)
         );
-    """)
+    """
+    )
 
     # Tabla de predicciones
-    cursor.execute("""
+    cursor.execute(
+        """
         DROP TABLE IF EXISTS predicciones CASCADE;
         CREATE TABLE predicciones (
             id SERIAL PRIMARY KEY,
@@ -127,7 +143,8 @@ def crear_tablas():
             acertada BOOLEAN, -- NULL si no ha terminado, TRUE/FALSE después
             UNIQUE (partido_id, fecha_prediccion)
         );
-    """)
+    """
+    )
 
     conn.commit()
     cursor.close()

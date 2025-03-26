@@ -18,7 +18,8 @@ class TestReductions:
     def arr1d(self, tz_naive_fixture):
         """Fixture returning DatetimeArray with parametrized timezones"""
         tz = tz_naive_fixture
-        dtype = DatetimeTZDtype(tz=tz) if tz is not None else np.dtype("M8[ns]")
+        dtype = DatetimeTZDtype(
+            tz=tz) if tz is not None else np.dtype("M8[ns]")
         arr = DatetimeArray._from_sequence(
             [
                 "2000-01-03",
@@ -56,7 +57,8 @@ class TestReductions:
     @pytest.mark.parametrize("tz", [None, "US/Central"])
     @pytest.mark.parametrize("skipna", [True, False])
     def test_min_max_empty(self, skipna, tz):
-        dtype = DatetimeTZDtype(tz=tz) if tz is not None else np.dtype("M8[ns]")
+        dtype = DatetimeTZDtype(
+            tz=tz) if tz is not None else np.dtype("M8[ns]")
         arr = DatetimeArray._from_sequence([], dtype=dtype)
         result = arr.min(skipna=skipna)
         assert result is NaT
@@ -67,7 +69,8 @@ class TestReductions:
     @pytest.mark.parametrize("tz", [None, "US/Central"])
     @pytest.mark.parametrize("skipna", [True, False])
     def test_median_empty(self, skipna, tz):
-        dtype = DatetimeTZDtype(tz=tz) if tz is not None else np.dtype("M8[ns]")
+        dtype = DatetimeTZDtype(
+            tz=tz) if tz is not None else np.dtype("M8[ns]")
         arr = DatetimeArray._from_sequence([], dtype=dtype)
         result = arr.median(skipna=skipna)
         assert result is NaT
@@ -172,7 +175,8 @@ class TestReductions:
 
         arr2d = arr.reshape(0, 3)
         result = arr2d.mean(axis=0, skipna=skipna)
-        expected = DatetimeArray._from_sequence([NaT, NaT, NaT], dtype=arr.dtype)
+        expected = DatetimeArray._from_sequence(
+            [NaT, NaT, NaT], dtype=arr.dtype)
         tm.assert_datetime_array_equal(result, expected)
 
         result = arr2d.mean(axis=1, skipna=skipna)

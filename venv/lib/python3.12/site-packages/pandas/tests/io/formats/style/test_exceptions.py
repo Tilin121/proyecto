@@ -1,13 +1,11 @@
-import pytest
-
-jinja2 = pytest.importorskip("jinja2")
-
+from pandas.io.formats.style import Styler
 from pandas import (
     DataFrame,
     MultiIndex,
 )
+import pytest
 
-from pandas.io.formats.style import Styler
+jinja2 = pytest.importorskip("jinja2")
 
 
 @pytest.fixture

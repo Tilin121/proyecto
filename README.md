@@ -45,7 +45,7 @@ cd prediccion-apuestas
 
 2. Crea un entorno virtual e instala las dependencias
 ```bash
-python -m venv venv
+python3 -m venv venv
 source venv/bin/activate  # En Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
@@ -54,7 +54,7 @@ pip install -r requirements.txt
 
 4. Inicializa la base de datos
 ```bash
-python main.py setup
+python3 main.py setup
 ```
 
 ## Uso
@@ -63,32 +63,32 @@ python main.py setup
 
 ```bash
 # Configurar la base de datos
-python main.py setup
+python3 main.py setup
 
 # Extraer datos (partidos próximos y estadísticas)
-python main.py extraer --dias 7
+python3 main.py extraer --dias 7
 
 # Entrenar el modelo
-python main.py entrenar
+python3 main.py entrenar
 
 # Predecir un partido específico
-python main.py predecir <partido_id>
+python3 main.py predecir <partido_id>
 
 # Predecir todos los partidos próximos
-python main.py proximos --dias 7 --min-valor 0.05 --min-confianza 0.1
+python3 main.py proximos --dias 7 --min-valor 0.05 --min-confianza 0.1
 
 # Actualizar predicciones pasadas
-python main.py actualizar
+python3 main.py actualizar
 
 # Ver estadísticas del modelo
-python main.py stats --dias 60
+python3 main.py stats --dias 60
 ```
 
 ### Interfaz web
 
 Inicia la aplicación web:
 ```bash
-python app.py
+python3 app.py
 ```
 
 Accede a la interfaz desde tu navegador: http://localhost:5000

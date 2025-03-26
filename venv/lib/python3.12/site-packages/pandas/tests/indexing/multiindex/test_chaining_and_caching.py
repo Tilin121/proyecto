@@ -20,7 +20,8 @@ def test_detect_chained_assignment(using_copy_on_write, warn_copy_on_write):
     b = [123, None]
     c = [1234, 2345]
     d = [12345, 23456]
-    tuples = [("eyes", "left"), ("eyes", "right"), ("ears", "left"), ("ears", "right")]
+    tuples = [("eyes", "left"), ("eyes", "right"),
+              ("ears", "left"), ("ears", "right")]
     events = {
         ("eyes", "left"): a,
         ("eyes", "right"): b,
@@ -43,7 +44,8 @@ def test_detect_chained_assignment(using_copy_on_write, warn_copy_on_write):
                 zed["eyes"]["right"].fillna(value=555, inplace=True)
 
 
-@td.skip_array_manager_invalid_test  # with ArrayManager df.loc[0] is not a view
+# with ArrayManager df.loc[0] is not a view
+@td.skip_array_manager_invalid_test
 def test_cache_updating(using_copy_on_write, warn_copy_on_write):
     # 5216
     # make sure that we don't try to set a dead cache
@@ -78,7 +80,8 @@ def test_indexer_caching(monkeypatch):
     size_cutoff = 20
     with monkeypatch.context():
         monkeypatch.setattr(libindex, "_SIZE_CUTOFF", size_cutoff)
-        index = MultiIndex.from_arrays([np.arange(size_cutoff), np.arange(size_cutoff)])
+        index = MultiIndex.from_arrays(
+            [np.arange(size_cutoff), np.arange(size_cutoff)])
         s = Series(np.zeros(size_cutoff), index=index)
 
         # setitem

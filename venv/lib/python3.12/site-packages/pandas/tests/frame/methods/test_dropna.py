@@ -32,7 +32,8 @@ class TestDataFrameMissingData:
         assert return_value is None
 
         smaller_frame = frame.dropna(how="all", subset=["foo"])
-        return_value = inplace_frame2.dropna(how="all", subset=["foo"], inplace=True)
+        return_value = inplace_frame2.dropna(
+            how="all", subset=["foo"], inplace=True)
         tm.assert_series_equal(smaller_frame["foo"], expected)
         tm.assert_series_equal(inplace_frame2["foo"], expected)
         assert return_value is None
@@ -248,7 +249,8 @@ class TestDataFrameMissingData:
 
     def test_subset_is_nparray(self):
         # GH 41021
-        df = DataFrame({"A": [1, 2, np.nan], "B": list("abc"), "C": [4, np.nan, 5]})
+        df = DataFrame(
+            {"A": [1, 2, np.nan], "B": list("abc"), "C": [4, np.nan, 5]})
         expected = DataFrame({"A": [1.0], "B": ["a"], "C": [4.0]})
         result = df.dropna(subset=np.array(["A", "C"]))
         tm.assert_frame_equal(result, expected)

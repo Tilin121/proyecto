@@ -15,7 +15,7 @@ class TestPipe:
             obj = obj["A"]
             expected = expected["A"]
 
-        f = lambda x, y: x**y
+        def f(x, y): return x**y
         result = obj.pipe(f, 2)
         tm.assert_equal(result, expected)
 
@@ -23,7 +23,7 @@ class TestPipe:
         obj = DataFrame({"A": [1, 2, 3]})
         obj = tm.get_obj(obj, frame_or_series)
 
-        f = lambda x, y: y
+        def f(x, y): return y
         result = obj.pipe((f, "y"), 0)
         tm.assert_equal(result, obj)
 
@@ -31,7 +31,7 @@ class TestPipe:
         obj = DataFrame({"A": [1, 2, 3]})
         obj = tm.get_obj(obj, frame_or_series)
 
-        f = lambda x, y: y
+        def f(x, y): return y
 
         msg = "y is both the pipe target and a keyword argument"
 
